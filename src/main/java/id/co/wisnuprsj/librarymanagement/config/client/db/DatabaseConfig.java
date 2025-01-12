@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 @Configuration
 public class DatabaseConfig {
 
-    @Bean("bn-playground")
+    @Bean("bnPlayground")
     @ConfigurationProperties("datasource.playground")
     @Primary
     public DataSource loadPlaygroundDataSource() {

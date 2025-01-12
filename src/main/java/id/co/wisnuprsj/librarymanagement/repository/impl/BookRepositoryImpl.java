@@ -1,15 +1,15 @@
 package id.co.wisnuprsj.librarymanagement.repository.impl;
 
-import id.co.wisnuprsj.librarymanagement.repository.model.Book;
 import id.co.wisnuprsj.librarymanagement.repository.BookRepository;
 import id.co.wisnuprsj.librarymanagement.repository.mapper.BookRowMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import id.co.wisnuprsj.librarymanagement.repository.model.Book;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -25,12 +25,13 @@ public class BookRepositoryImpl implements BookRepository {
     private static final String GET_BOOK_BY_TITLE_OR_AUTHOR = "SELECT * FROM book WHERE title = ? OR author = ?";
     private static final String INSERT_BOOK = "INSERT INTO BOOK (bookid, title, author, isbn, publisher) VALUES (?,?,?,?,?)";
     private static final String DELETE_BOOK_BY_ID = "DELETE FROM BOOK WHERE bookid = ?";
-    private static final String UPDATE_BOOK = "UPDATE BOOK SET title = ?, author = ?, isbn = ?, publisher = ? WHERE bookid = ?";
+    private static final String UPDATE_BOOK = "UPDATE BOOK SET title = ?, author = ?, isbn = ?, publisher = ?, updated_date = ? WHERE bookid = ?";
 
+    private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    @Qualifier("jdbc-playground")
-    private JdbcTemplate jdbcTemplate;
+    public BookRepositoryImpl(@Qualifier("jdbcPlayground") JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Book> getAllBook() {
@@ -84,6 +85,6 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void updateBook(Book book) throws DataAccessException {
-        jdbcTemplate.update(UPDATE_BOOK, book.getTitle(), book.getAuthor(), book.getIsbn(), book.getPublisher(), book.getBookId());
+        jdbcTemplate.update(UPDATE_BOOK, book.getTitle(), book.getAuthor(), book.getIsbn(), book.getPublisher(), new Date(), book.getBookId());
     }
 }

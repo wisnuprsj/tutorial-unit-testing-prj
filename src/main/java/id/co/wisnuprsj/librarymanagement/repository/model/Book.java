@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -17,6 +18,8 @@ public class Book {
     private String author;
     private String isbn;
     private String publisher;
+    private Date createdDate;
+    private Date updatedDate;
 
     public void constructBook(BookRq bookRq) {
         this.bookId = UUID.randomUUID().toString();
